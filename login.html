@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HOT PEDIDOS J.A</title>
+<style>
+  *{margin:0; padding:0; box-sizing:border-box; font-family:Arial, sans-serif;}
+  body{ background:#E31B1B; min-height:100vh; padding:18px 16px; text-align:center; background-image: radial-gradient(circle, rgba(255,255,255,0.15) 2px, transparent 3px); background-size:35px 35px; }
+  .logoTop{ width:92%; max-width:360px; background:white; border-radius:20px; padding:10px; box-shadow:0 12px 25px rgba(0,0,0,0.35); margin:0 auto 10px auto; display:block; }
+  .moto{ font-size:42px; margin:2px 0; }
+  h2{ color:white; font-size:30px; }
+  .sub{ color:#FFE9E0; font-size:14px; margin-bottom:14px; }
+  .card{ background:#FFF7E6; border-radius:26px; padding:16px; max-width:400px; margin:0 auto; box-shadow:0 15px 30px rgba(0,0,0,0.3); text-align:left; }
+  .tabs{ display:flex; gap:10px; margin-bottom:14px; }
+  .tab{ flex:1; padding:12px; border-radius:12px; border:1.5px solid #B91A1A; font-weight:900; font-size:17px; cursor:pointer; text-align:center; background:transparent; color:#7A0A0A; }
+  .tab.active{ background:#E31B1B; color:white; box-shadow:0 6px 15px rgba(227,27,27,0.4); }
+  .inner{ background:#FEF2D6; border-radius:18px; padding:16px; }
+  .inner h3{ text-align:center; color:#6B0F0F; font-size:24px; margin-bottom:12px; }
+  label{ font-size:14px; font-weight:800; color:#6B0F0F; display:block; margin:10px 0 5px 0; }
+  input{ width:100%; padding:12px; border-radius:10px; border:1.5px solid #A33; background:#FFFDF5; font-size:14px; outline:none; }
+  .check{ display:flex; gap:8px; align-items:center; font-size:12px; margin:14px 0; color:#4A0E0E; }
+  .btn{ width:100%; background:#E31B1B; color:#FFF8E1; border:none; padding:15px; border-radius:12px; font-size:20px; font-weight:900; cursor:pointer; margin-top:5px; }
+  .btn2{ width:100%; background:white; color:#E31B1B; border:1.5px solid #E31B1B; padding:12px; border-radius:12px; font-size:15px; font-weight:900; cursor:pointer; margin-top:10px; }
+  .links{ text-align:center; font-size:13px; margin-top:12px; color:#6B0F0F; }
+  .links a{ color:#E31B1B; font-weight:900; cursor:pointer; }
+  .footer2{ color:white; font-size:11px; margin-top:14px; opacity:0.9; }
+</style>
+</head>
+<body>
+
+  <img class="logoTop" src="imagenes/camaron.png" alt="HOT PEDIDOS J.A">
+
+  <div class="moto">🛵</div>
+  <h2>Crear cuenta</h2>
+  <p class="sub">Únete como comprador o vendedor</p>
+
+  <div class="card">
+    <div class="tabs">
+      <div class="tab active" id="tabComprador" onclick="cambiar('comprador')">COMPRADOR</div>
+      <div class="tab" id="tabVendedor" onclick="cambiar('vendedor')">VENDEDOR</div>
+    </div>
+
+    <div class="inner">
+      <h3 id="tituloForm">Registro de comprador</h3>
+
+      <label>Nombre completo</label>
+      <input type="text" placeholder="Ej. Juan Pérez" id="nombre">
+
+      <label>Teléfono</label>
+      <input type="tel" placeholder="+593 99 999 9999" id="telefono">
+
+      <label>Contraseña</label>
+      <input type="password" placeholder="••••••" id="pass">
+
+      <div id="campoTienda" style="display:none;">
+        <label>Nombre de la tienda</label>
+        <input type="text" placeholder="Ej. Mariscos El Golfo" id="tienda">
+        <label>¿Qué vendes?</label>
+        <input type="text" placeholder="Ej. Ceviches, camarón apanado" id="quevende">
+      </div>
+
+      <div class="check">
+        <input type="checkbox" checked style="width:auto;"> <span id="textoTerminos">Acepto Términos y Políticas del comprador</span>
+      </div>
+
+      <button class="btn" id="btnTexto" onclick="registrar()">ENTRAR A COMPRAR 🔥</button>
+      <button class="btn2" onclick="entrar()">YA TENGO CUENTA, ENTRAR</button>
+
+      <p class="links">
+        <a onclick="olvidar()">¿Olvidaste tu contraseña?</a>
+      </p>
+    </div>
+  </div>
+
+  <p class="footer2">HOT PEDIDOS J.A • Quito • v1.0</p>
+
+<script>
+  let tipoActual = 'comprador';
+
+  function cambiar(tipo){
+    tipoActual = tipo;
+    document.getElementById('tabComprador').classList.remove('active');
+    document.getElementById('tabVendedor').classList.remove('active');
+    if(tipo==='comprador'){
+      document.getElementById('tabComprador').classList.add('active');
+      document.getElementById('tituloForm').innerText='Registro de comprador';
+      document.getElementById('campoTienda').style.display='none';
+      document.getElementById('textoTerminos').innerText='Acepto Términos y Políticas del comprador';
+      document.getElementById('btnTexto').innerText='ENTRAR A COMPRAR 🔥';
+    }else{
+      document.getElementById('tabVendedor').classList.add('active');
+      document.getElementById('tituloForm').innerText='Registro de vendedor';
+      document.getElementById('campoTienda').style.display='block';
+      document.getElementById('textoTerminos').innerText='Acepto Términos y Políticas del vendedor';
+      document.getElementById('btnTexto').innerText='REGISTRAR MI TIENDA 🛵';
+    }
+  }
+
+  async function hacerCandado(texto){
+    const data = new TextEncoder().encode(texto);
+    const hash = await crypto.subtle.digest('SHA-256', data);
+    return Array.from(new Uint8Array(hash)).map(b=>b.toString(16).padStart(2,'0')).join('');
+  }
+
+  async function registrar(){
+    let nombre = document.getElementById('nombre').value.trim();
+    let telefono = document.getElementById('telefono').value.trim();
+    let pass = document.getElementById('pass').value.trim();
+    if(nombre=='' || telefono=='' || pass==''){ alert('Llena todo, broo'); return; }
+    let tienda = document.getElementById('tienda').value;
+    let quevende = document.getElementById('quevende') ? document.getElementById('quevende').value : '';
+    let passSegura = await hacerCandado(pass);
+    localStorage.setItem('user_'+telefono, JSON.stringify({nombre:nombre, pass:passSegura, tipo:tipoActual, tienda:tienda, quevende:quevende}));
+    localStorage.setItem('usuario_actual', telefono);
+    localStorage.setItem('usuario_nombre', nombre);
+    localStorage.setItem('usuario_tipo', tipoActual);
+    localStorage.setItem('tipo_usuario', tipoActual);
+    localStorage.setItem('usuario_tienda', tienda);
+    localStorage.setItem('nombre_usuario', nombre);
+    if(tipoActual==='comprador'){ window.location.href='menu.html'; } else { window.location.href='menu.html'; }
+  }
+
+  async function entrar(){
+    let telefono = document.getElementById('telefono').value.trim();
+    let pass = document.getElementById('pass').value.trim();
+    if(telefono=='' || pass==''){ alert('Pon tu teléfono y contraseña para entrar, broo'); return; }
+    let datos = localStorage.getItem('user_'+telefono);
+    if(!datos){ alert('Ese número no está registrado, broo. Regístrate primero'); return; }
+    datos = JSON.parse(datos);
+    let passAhora = await hacerCandado(pass);
+    if(datos.pass === pass){ datos.pass = passAhora; localStorage.setItem('user_'+telefono, JSON.stringify(datos)); }
+    if(datos.pass !== passAhora){ alert('Contraseña incorrecta, broo, revisa bien'); return; }
+    else{
+      localStorage.setItem('usuario_actual', telefono);
+      localStorage.setItem('usuario_nombre', datos.nombre);
+      localStorage.setItem('usuario_tipo', datos.tipo);
+      localStorage.setItem('tipo_usuario', datos.tipo);
+      localStorage.setItem('nombre_usuario', datos.nombre);
+      window.location.href='menu.html';
+    }
+  }
+
+ async function olvidar(){
+  let telefono = document.getElementById('telefono').value.trim();
+  let nombre = document.getElementById('nombre').value.trim();
+  if(telefono=='' || nombre==''){ alert('Pon tu número y tu nombre, broo, para saber que eres tú, broo'); return; }
+  let datos = localStorage.getItem('user_'+telefono);
+  if(!datos){ alert('Ese número no existe, broo'); return; }
+  datos = JSON.parse(datos);
+  if(datos.nombre.toLowerCase() !== nombre.toLowerCase()){ alert('Ese nombre no coincide con ese número, broo'); return; }
+  let nueva = prompt('Ya, broo, sí eres tú. Pon tu nueva contraseña, broo:');
+  if(nueva && nueva.trim()!==''){
+    datos.pass = await hacerCandado(nueva.trim());
+    localStorage.setItem('user_'+telefono, JSON.stringify(datos));
+    alert('Listo, broo, ya cambiaste. Ahora entra con tu nueva, broo');
+    document.getElementById('pass').value = nueva.trim();
+  }
+}
+</script>
+</body>
+</html>

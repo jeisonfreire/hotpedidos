@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Publicar - HOT PEDIDOS J.A</title>
+<style>
+  *{box-sizing:border-box;font-family:Arial, sans-serif}
+  body{margin:0;background:#E31B1B;min-height:100vh;max-width:480px;margin:0 auto}
+  .header{background:#FFF8E7;margin:15px 15px 0;padding:10px 15px;border-radius:20px;display:flex;align-items:center;justify-content:space-between}
+  .header b{color:#E31B1B;font-size:19px}
+  .header span{font-size:22px;cursor:pointer}
+  .header img{width:45px;height:45px;border-radius:50%;object-fit:cover}
+  .caja{background:#FFF8E7;margin:15px;border-radius:22px;padding:20px}
+  h2{margin:0;text-align:center;color:#7A0A0A;font-size:25px}
+  .sub{text-align:center;font-size:13px;color:#7A0A0A;margin:5px 0 15px}
+  .foto-box{border:2px dashed #A33A3A;border-radius:15px;padding:20px;text-align:center;cursor:pointer;background:#FFFDF5}
+  .foto-box img{width:110px;height:110px;object-fit:cover;border-radius:50%;margin:10px auto 0;display:none}
+  label{font-weight:900;color:#5A0A0A;font-size:14px;display:block;margin-top:12px}
+  input,textarea{width:100%;padding:12px;border:1.5px solid #A33A3A;border-radius:12px;background:white;margin-top:5px;outline:none}
+  .stock-row{display:flex;align-items:center;gap:10px}
+  .stock-row input{flex:1}
+  .stock-btns{font-size:24px;font-weight:900;color:#7A0A0A;cursor:pointer;padding:0 10px}
+  .btn{width:100%;padding:15px;background:#E31B1B;color:white;border:none;border-radius:12px;font-weight:900;font-size:17px;margin-top:18px;cursor:pointer}
+  .prod{background:white;border-radius:12px;padding:10px;margin-top:10px;display:flex;gap:10px;align-items:center}
+  .prod img{width:60px;height:60px;border-radius:10px;object-fit:cover}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <span onclick="history.back()">←</span>
+  <img src="imagenes/camaron.png">
+  <b>HOT PEDIDOS J.A</b>
+  <span>📋</span>
+</div>
+
+<div class="caja">
+  <h2>Publicar nuevo producto</h2>
+  <p class="sub">Sube todos los que quieras, broo</p>
+
+  <div class="foto-box" onclick="document.getElementById('foto').click()">
+    <div style="font-size:35px">📷</div>
+    <p>Subir foto del platillo</p>
+    <small>Toca para subir una foto</small>
+    <img id="preview">
+  </div>
+  <input type="file" id="foto" accept="image/*" hidden>
+
+  <label>Nombre del platillo</label>
+  <input id="nombre" placeholder="Ej. Ceviche de camarón">
+
+  <label>Precio ($)</label>
+  <input id="precio" type="number" placeholder="$5.00">
+
+  <label>Descripción</label>
+  <textarea id="desc" rows="2" placeholder="Ej. Ceviche con limón, cebolla"></textarea>
+
+  <label>Stock disponible</label>
+  <div class="stock-row">
+    <input id="stock" type="number" value="20">
+    <span class="stock-btns" onclick="cambiarStock(1)">+</span>
+    <span class="stock-btns" onclick="cambiarStock(-1)">−</span>
+  </div>
+
+  <button class="btn" onclick="publicar()">PUBLICAR PRODUCTO</button>
+
+  <h3 style="margin-top:20px;color:#7A0A0A">Mis productos: <span id="contador">0</span></h3>
+  <div id="lista"></div>
+  <button class="btn" style="background:#222" onclick="location.href='menu.html'">VER MI TIENDA / MENÚ 👀</button>
+</div>
+
+<script>
+  let fotoBase = "";
+  document.getElementById('foto').addEventListener('change', function(e){
+    let f = e.target.files[0];
+    let reader = new FileReader();
+    reader.onload = function(ev){
+      let img = new Image();
+      img.onload = function(){
+        let canvas = document.createElement('canvas');
+        let max = 600;
+        let ratio = Math.min(max/img.width, max/img.height);
+        canvas.width = img.width*ratio;
+        canvas.height = img.height*ratio;
+        canvas.getContext('2d').drawImage(img,0,0,canvas.width,canvas.height);
+        fotoBase = canvas.toDataURL('image/jpeg', 0.7);
+        let p = document.getElementById('preview');
+        p.src = fotoBase; p.style.display='block';
+      };
+      img.src = ev.target.result;
+    };
+    reader.readAsDataURL(f);
+  });
+  function cambiarStock(n){
+    let s = document.getElementById('stock');
+    s.value = Math.max(0, parseInt(s.value||0)+n);
+  }
+  function publicar(){
+    function publicar(){
+let nombre = document.getElementById('nombre').value.trim();
+let precio = document.getElementById('precio').value;
+let desc = document.getElementById('desc').value.trim();
+let stock = document.getElementById('stock').value;
+if(!nombre || !precio){ alert('Pon nombre y precio, broo'); return; }
+let tienda = localStorage.getItem('usuario_tienda') || 'HOT PEDIDOS J.A';
+// ESTO ES LO NUEVO, BROO - GUARDA QUIEN VENDE Y SU NUMERO, BROO
+let miTel = localStorage.getItem('usuario_actual') || '';
+let miNombre = localStorage.getItem('usuario_nombre') || 'Vendedor';
+let productos = JSON.parse(localStorage.getItem('productos_hot') || '[]');
+productos.push({nombre, precio, desc, stock, foto: fotoBase, vendedorTel: miTel, vendedorNombre: miNombre, tienda: tienda});
+    alert('Publicado, broo! Ya está en tu menú, broo');
+    document.getElementById('nombre').value='';
+    document.getElementById('precio').value='';
+    document.getElementById('desc').value='';
+    document.getElementById('preview').style.display='none';
+    fotoBase="";
+    mostrar();
+  }
+  function mostrar(){
+    let productos = JSON.parse(localStorage.getItem('productos_hot') || '[]');
+    document.getElementById('contador').innerText = productos.length;
+    document.getElementById('lista').innerHTML = productos.map((p,i)=>`
+      <div class="prod">
+        ${p.foto?`<img src="${p.foto}">`:''}
+        <div style="flex:1"><b>${p.nombre}</b><br>$${p.precio} - Stock ${p.stock}</div>
+        <span onclick="borrar(${i})" style="cursor:pointer">🗑️</span>
+      </div>
+    `).join('');
+  }
+  function borrar(i){
+    let productos = JSON.parse(localStorage.getItem('productos_hot') || '[]');
+    productos.splice(i,1);
+    localStorage.setItem('productos_hot', JSON.stringify(productos));
+    mostrar();
+  }
+  mostrar();
+</script>
+</body>
+</html>

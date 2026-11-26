@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>J.A pedidos</title>
+<style>
+  *{margin:0; padding:0; box-sizing:border-box;}
+  body{
+    background: linear-gradient(180deg, #FF2D2D 0%, #E11A1A 55%, #B91A1A 100%);
+    min-height:100vh;
+    text-align:center;
+    font-family:Arial, sans-serif;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:space-between;
+    padding:25px 0 20px 0;
+  }
+  h1{ color:white; font-size:20px; font-weight:400; letter-spacing:2px; }
+  .logo{
+    width:92%;
+    max-width:380px;
+    background:white;
+    border-radius:22px;
+    padding:14px;
+    margin-top:18px;
+    box-shadow:0 12px 30px rgba(0,0,0,0.35);
+    animation: flotar 3s ease-in-out infinite;
+  }
+  @keyframes flotar{
+    0%,100%{ transform:translateY(0); }
+    50%{ transform:translateY(-6px); }
+  }
+  .btn{
+    display:block;
+    width:88%;
+    max-width:360px;
+    margin-top:28px;
+    background: linear-gradient(90deg, #FF8C00, #FF6D00);
+    color:white;
+    padding:17px;
+    border-radius:13px;
+    text-decoration:none;
+    font-weight:800;
+    font-size:20px;
+    letter-spacing:1px;
+    box-shadow:0 8px 20px rgba(255,109,0,0.6);
+    position:relative;
+    overflow:hidden;
+    animation: respirar 2s infinite;
+  }
+  @keyframes respirar{
+    0%,100%{ transform:scale(1); }
+    50%{ transform:scale(1.03); }
+  }
+  .btn::after{
+    content:"";
+    position:absolute;
+    top:0; left:-80%;
+    width:50%; height:100%;
+    background: linear-gradient(120deg, transparent, rgba(255,255,255,0.7), transparent);
+    transform: skewX(-20deg);
+  }
+  .btn:hover::after{ left:130%; transition: left 0.6s; }
+  .trust{
+    display:flex;
+    gap:12px;
+    justify-content:center;
+    margin-top:16px;
+  }
+  .trust span{
+    background: rgba(255,255,255,0.15);
+    color:white;
+    font-size:12px;
+    padding:6px 10px;
+    border-radius:20px;
+    border:1px solid rgba(255,255,255,0.25);
+  }
+  .footer{ color:#FFDAD5; font-size:12px; }
+</style>
+</head>
+<body>
+
+  <div>
+    <h1>J.A pedidos</h1>
+    <img class="logo" src="imagenes/camaron.png" alt="HOT PEDIDOS">
+  </div>
+
+  <div style="width:100%; display:flex; flex-direction:column; align-items:center;">
+    <a href="login.html" class="btn" id="btnIniciar">🔥 INICIAR →</a>
+    <div class="trust">
+      <span>⭐ 4.9</span>
+      <span>🛵 25 min</span>
+      <span>📍 Quito</span>
+    </div>
+  </div>
+
+  <p class="footer">Entrega rápida y segura • v1.0</p>
+
+<script src="punto.js"></script>
+</body>
+</html>

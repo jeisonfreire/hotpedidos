@@ -1,0 +1,122 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #fff5E6;
+    color: #222;
+    line-height: 1.6;
+}
+
+header {
+    background-color: #FF4500;
+    color: white;
+    padding: 30px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items:center;
+}
+header h1 {
+  font-size: 40px;
+  margin: 0;
+}
+header img {
+  width: 200px;
+  border-radius: 12px;
+}
+
+nav {
+    background-color: #E63946;
+    padding: 15px;
+    text-align: center;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    margin: 0 12px;
+}
+
+main {
+    max-width: 900px;
+    margin: 30px auto;
+    padding: 20px;
+}
+h2 {
+  color: #E63946;
+  font-size: 26px;
+  border-bottom: 3px solid #FFD166;
+  padding-bottom: 5px;
+}
+
+p {
+  font-size: 17px;
+}
+
+section {
+    background-color: white;
+    margin-bottom: 25px;
+    padding: 25px;
+    border: 2px solid #FFD166;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0,1);
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+button {
+    background-color: #FF4500;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+footer {
+    background-color: #14213d;
+    color: white;
+    text-align: center;
+    padding: 20px;
+}
+
+h2 {
+  color: #E63946;
+  border-left: 6px solid #FF4500;
+  padding-left: 10px;
+}
+
+.destacado {
+  color: #E63946;
+  font-weight: bold;
+}
+
+#principal {
+  background-color: #FFF5E6;
+}
+body {
+  font-family: Arial, sans-serif;
+  line-height: 1.6;
+}
+
+p {
+  font-size: 18px;
+}
+
+a {
+  color: #FF4500;
+  text-decoration: none;
+}
+body { font-family: Arial, sans-serif; background: #fff8e1; margin: 0; padding: 20px; }
+h1 { color: #d32f2f; }
+#listaProductos { display: flex; flex-wrap: wrap; justify-content: center; gap: 16px; list-style: none; padding: 0; }
+#listaProductos li { width: 200px; background: white; border: 1px solid #ddd; border-radius: 12px; padding: 10px; text-align: center; }
+.foto-producto { width: 160px; height: 120px; object-fit: cover; border-radius: 12px; }
+button { background: #ff5722; color: white; border: none; padding: 8px 14px; border-radius: 8px; cursor: pointer; }

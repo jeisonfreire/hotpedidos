@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mi Perfil - HOT PEDIDOS</title>
+<style>
+body{margin:0;font-family:Arial;background:#FF6B00;min-height:100vh;text-align:center}
+.caja{background:white;max-width:400px;margin:20px auto;padding:20px;border-radius:20px}
+.foto{width:100px;height:100px;border-radius:50%;background:#E53935;color:white;font-size:50px;display:flex;align-items:center;justify-content:center;margin:0 auto}
+.btn{width:100%;padding:12px;margin-top:10px;border:none;border-radius:10px;font-weight:bold;cursor:pointer}
+</style>
+</head>
+<body>
+<div class="caja">
+<div class="foto" id="letra">M</div>
+<h2 id="nombre">Michael</h2>
+<p id="tipo" style="background:#E53935;color:white;padding:5px 15px;border-radius:20px;display:inline-block">COMPRADOR</p>
+<hr>
+<p style="text-align:left"><b>📞 Teléfono:</b> <span id="tel"></span></p>
+<p style="text-align:left"><b>🏪 Tienda:</b> <span id="tienda">-</span></p>
+<p style="text-align:left"><b>🍤 Vende:</b> <span id="vende">-</span></p>
+<p style="text-align:left"><b>🛵 Pedidos:</b> <span id="pedidos">0</span></p>
+
+<button class="btn" style="background:#222;color:white" onclick="location.href='menu.html'">Volver al Menú</button>
+<button class="btn" style="background:#E53935;color:white" onclick="editar()">Editar Perfil</button>
+<button class="btn" style="background:#333;color:white" onclick="salir()">Cerrar Sesión</button>
+</div>
+<script>
+var nombre = localStorage.getItem('usuario_nombre') || 'Michael';
+var tipo = localStorage.getItem('usuario_tipo') || localStorage.getItem('tipo_usuario') || 'comprador';
+var tel = localStorage.getItem('usuario_actual') || '';
+var tienda = localStorage.getItem('usuario_tienda') || 'No tiene tienda, es comprador, broo';
+var datos = JSON.parse(localStorage.getItem('user_'+tel) || '{}');
+document.getElementById('nombre').innerText = nombre;
+document.getElementById('letra').innerText = nombre.charAt(0).toUpperCase();
+document.getElementById('tipo').innerText = tipo.toUpperCase();
+document.getElementById('tel').innerText = tel;
+document.getElementById('tienda').innerText = datos.tienda || tienda;
+document.getElementById('vende').innerText = datos.quevende || '-';
+function editar(){
+  var nuevo = prompt('Pon tu nuevo nombre, broo:', nombre);
+  if(nuevo){ localStorage.setItem('usuario_nombre', nuevo); localStorage.setItem('nombre_usuario', nuevo); location.reload(); }
+}
+function salir(){
+  localStorage.removeItem('usuario_actual');
+  location.href='login.html';
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HOT PEDIDOS - J.A PEDIDOS</title>
+<style>
+body{margin:0;font-family:Arial;background:#FF6B00;min-height:100vh}
+.header{background:#E53935;padding:10px 12px;display:flex;justify-content:space-between;align-items:center;color:white;position:sticky;top:0}
+.header img{width:50px;height:50px;border-radius:12px;background:white;object-fit:contain}
+.boton-nave{background:white;color:#E53935;border:none;padding:7px 12px;border-radius:20px;font-weight:bold;cursor:pointer;display:flex;align-items:center;gap:6px}
+.boton-nave img{width:30px;height:30px;border-radius:50%;object-fit:cover}
+.logo-centro{text-align:center;padding:10px;color:white}
+.logo-centro img{width:170px;height:170px;object-fit:contain;background:white;border-radius:15px;padding:5px}
+.titulo{text-align:center;color:white;margin:10px}
+.buscar{text-align:center;margin-bottom:12px}
+.buscar input{padding:9px;border:none;border-radius:8px}
+.buscar select{padding:9px;border:none;border-radius:8px}
+.buscar button{padding:9px 14px;background:#E53935;color:white;border:none;border-radius:8px;font-weight:bold}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;padding:10px;max-width:900px;margin:auto}
+@media(min-width:700px){.grid{grid-template-columns:repeat(4,1fr)}}
+.card{background:white;border-radius:12px;text-align:center;padding-bottom:10px;box-shadow:0 2px 8px rgba(0,0,0,0.2)}
+.card img{width:100%;height:140px;object-fit:cover;border-radius:12px 12px 0 0}
+.precio{color:#E53935;font-weight:bold}
+.card button{background:#E53935;color:white;border:none;padding:8px 18px;border-radius:15px;margin-top:5px;cursor:pointer}
+.input-ubi{width:95%;padding:9px;margin:5px 0;border:1px solid #ddd;border-radius:8px}
+.btn-ubi{width:100%;padding:10px;background:#FF6B00;color:white;border:none;border-radius:8px;font-weight:bold;cursor:pointer}
+</style>
+</head>
+<body>
+<div class="header">
+<div style="display:flex;gap:8px;align-items:center"><img src="imagenes/camaron.png"><div><b>HOT PEDIDOS</b><br><small>J.A PEDIDOS</small></div></div>
+<div style="display:flex;gap:5px">
+<button class="boton-nave" onclick="location.href='perfil.html'">👤 <span id="nombreArriba">Mi Perfil</span></button>
+<button class="boton-nave" onclick="verCarrito()"><img src="imagenes/nave.jpg"> Mi Nave $<span id="totalArriba">0.00</span></button>
+</div>
+</div>
+<div class="logo-centro">
+<img src="imagenes/camaron.png">
+<h2 style="margin:5px;font-size:26px">HOT PEDIDOS - J.A PEDIDOS</h2>
+</div>
+<h3 class="titulo">Mi tienda - J.A PEDIDOS</h3>
+<div class="buscar">
+<input id="buscar" placeholder="Buscar producto..." onkeyup="filtrar()">
+<select id="categoria" onchange="filtrar()">
+<option value="todo">Todas las categorias</option>
+<option value="mariscos">Mariscos</option>
+<option value="pollos">Pollos</option>
+<option value="combos">Combos</option>
+</select>
+<button onclick="filtrar()">Buscar</button>
+</div>
+<div style="text-align:center" id="cajaPublicar">
+<button onclick="location.href='vendedor.html'" style="padding:10px 20px;background:#222;color:white;border:none;border-radius:20px;font-weight:900;cursor:pointer">+ PUBLICAR NUEVO, BROO 🔥</button>
+</div>
+<div class="grid" id="grid">
+<div class="card" data-nombre="Ceviche Mixto" data-cat="mariscos"><img src="imagenes/ceviche.jpg"><h4>Ceviche Mixto</h4><p class="precio">$5.50</p><button onclick="agregar('Ceviche Mixto',5.50)">Agregar</button></div>
+<div class="card" data-nombre="Arroz con Mariscos" data-cat="mariscos"><img src="imagenes/arroz.jpg"><h4>Arroz con Mariscos</h4><p class="precio">$9.00</p><button onclick="agregar('Arroz con Mariscos',9)">Agregar</button></div>
+<div class="card" data-nombre="Brochetas" data-cat="pollos"><img src="imagenes/brochetas.jpg"><h4>Brochetas</h4><p class="precio">$6.50</p><button onclick="agregar('Brochetas',6.50)">Agregar</button></div>
+<div class="card" data-nombre="Combo Familiar" data-cat="combos"><img src="imagenes/combo.jpg"><h4>Combo Familiar</h4><p class="precio">$15.00</p><button onclick="agregar('Combo Familiar',15)">Agregar</button></div>
+</div>
+<div id="ventana" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);justify-content:center;align-items:center;z-index:99">
+<div style="background:white;padding:15px;border-radius:12px;width:92%;max-width:420px;max-height:90vh;overflow:auto">
+<h3>Mi Nave - J.A PEDIDOS</h3>
+<div id="lista"></div>
+<p>Subtotal: $<span id="subtotal">0.00</span></p>
+<p>Servicio: $0.15</p>
+<p>Moto: GRATIS</p>
+<p><b>Total: $<span id="total">0.00</span></b></p>
+<hr>
+<h4>¿Donde te lo llevamos?</h4>
+<input id="nombreCliente" class="input-ubi" placeholder="Tu nombre">
+<input id="direccion" class="input-ubi" placeholder="Barrio, calle, casa... Ej: El Calzado, calle 1">
+<input id="referencia" class="input-ubi" placeholder="Referencia: color de casa, frente a...">
+<button class="btn-ubi" onclick="miUbicacion()">📍 Usar mi ubicación actual</button>
+<p id="textoUbi" style="font-size:13px;color:green"></p>
+<input type="hidden" id="linkUbi" value="">
+<button onclick="vaciar()" style="width:100%;padding:10px;background:#333;color:white;border:none;border-radius:8px;margin-top:10px">Vaciar</button>
+<button onclick="pedir()" style="width:100%;padding:10px;background:green;color:white;border:none;border-radius:8px;margin-top:5px">Pedir por WhatsApp con Ubicación</button>
+<button onclick="cerrar()" style="width:100%;padding:10px;margin-top:5px">Cerrar</button>
+</div>
+</div>
+<script>
+var miLista=[];
+function agregar(nombre,precio){miLista.push({nombre:nombre,precio:precio});actualizar();alert(nombre+" agregado a tu Nave");}
+function actualizar(){
+var suma=0;for(var i=0;i<miLista.length;i++){suma=suma+miLista[i].precio;}
+var totalFinal=0;if(miLista.length>0){totalFinal=suma+0.15;}
+document.getElementById('totalArriba').innerText=totalFinal.toFixed(2);
+document.getElementById('subtotal').innerText=suma.toFixed(2);
+document.getElementById('total').innerText=totalFinal.toFixed(2);
+var texto="";for(var j=0;j<miLista.length;j++){texto=texto+"<p>"+miLista[j].nombre+" - $"+miLista[j].precio+"</p>";}
+if(miLista.length==0){texto="<p>vacio</p>";}
+document.getElementById('lista').innerHTML=texto;
+}
+function vaciar(){miLista=[];actualizar();}
+function verCarrito(){document.getElementById('ventana').style.display='flex';actualizar();}
+function cerrar(){document.getElementById('ventana').style.display='none';}
+function miUbicacion(){
+document.getElementById('textoUbi').innerText="Buscando tu ubicación...";
+if(navigator.geolocation){
+navigator.geolocation.getCurrentPosition(function(pos){
+var lat=pos.coords.latitude;
+var lon=pos.coords.longitude;
+var link="https://www.google.com/maps?q="+lat+","+lon;
+document.getElementById('linkUbi').value=link;
+document.getElementById('textoUbi').innerText="✅ Ubicación lista: "+lat+", "+lon;
+},function(){document.getElementById('textoUbi').innerText="No se pudo agarrar, activa el GPS porfa";});
+}else{document.getElementById('textoUbi').innerText="Tu cel no deja agarrar ubicación";}
+}
+function pedir(){
+if(miLista.length==0){alert("Tu Nave esta vacia");return;}
+var nombre=document.getElementById('nombreCliente').value;
+var dir=document.getElementById('direccion').value;
+var ref=document.getElementById('referencia').value;
+var ubi=document.getElementById('linkUbi').value;
+var m="Hola HOT PEDIDOS quiero pedir:%0A";
+for(var k=0;k<miLista.length;k++){m=m+"- "+miLista[k].nombre+" $"+miLista[k].precio+"%0A";}
+m=m+"%0A Total: $"+document.getElementById('total').innerText;
+m=m+"%0A Nombre: "+nombre;
+m=m+"%0A Direccion: "+dir;
+m=m+"%0A Referencia: "+ref;
+if(ubi!=""){m=m+"%0A Mi ubicación: "+ubi;}else{m=m+"%0A (No compartió GPS)";}
+window.open("https://wa.me/593999999999?text="+m);
+}
+function filtrar(){
+var palabra=document.getElementById('buscar').value.toLowerCase();
+var cat=document.getElementById('categoria').value;
+var tarjetas=document.querySelectorAll('.card');
+tarjetas.forEach(function(t){
+var n=t.getAttribute('data-nombre').toLowerCase();
+var c=t.getAttribute('data-cat');
+if((cat=='todo'||cat==c)&&n.includes(palabra)){t.style.display='block';}else{t.style.display='none';}
+});
+}
+var productosNuevos = JSON.parse(localStorage.getItem('productos_hot') || '[]');
+var grid = document.getElementById('grid');
+productosNuevos.forEach(function(p){
+  var safeNombre = p.nombre.replace(/'/g,"");
+  var div = document.createElement('div');
+  div.className = 'card';
+  div.setAttribute('data-nombre', p.nombre);
+  div.setAttribute('data-cat', 'mariscos');
+  div.innerHTML = (p.foto?'<img src="'+p.foto+'">':'') + '<h4>'+p.nombre+'</h4><p class="precio">$'+p.precio+'</p><small>'+(p.desc||'')+'</small><br><button onclick="agregar(\''+safeNombre+'\','+p.precio+')">Agregar</button>';
+  grid.appendChild(div);
+});
+// *** ESTO ES LO QUE ESCONDE EL BOTON Y PONE TU PERFIL, BROO ***
+var miNombre = localStorage.getItem('usuario_nombre') || localStorage.getItem('nombre_usuario') || 'Mi Perfil';
+document.getElementById('nombreArriba').innerText = miNombre;
+var tipoUsuario = localStorage.getItem('usuario_tipo') || localStorage.getItem('tipo_usuario');
+if(tipoUsuario === 'comprador'){
+  document.getElementById('cajaPublicar').style.display = 'none';
+} else if(tipoUsuario === 'vendedor'){
+  document.getElementById('cajaPublicar').style.display = 'block';
+} else {
+  document.getElementById('cajaPublicar').style.display = 'none';
+}
+</script>
+</body>
+</html>
